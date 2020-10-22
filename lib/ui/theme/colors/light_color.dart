@@ -12,8 +12,8 @@ class KLightColors {
 
   static const Color primary = Color(0XFF5964e0);
   static const Color primaryLight = Color(0xFFfBCDFFF);
-  static const Color background = Color(0XFFffffff);
-  static const Color cardColor = Color(0XFFededed);
+  static const Color background = Color(0XFFf2f2f2);
+  static const Color cardColor = Color(0XFFffffff);
   static const Color surfaceColor = Color(0XFFf8f8f8);
   static const Color onSurfaceLightColor = Color(0XFFfbfbfc);
   static const Color onSurfaceDarkColor = Color(0XFF94959e);

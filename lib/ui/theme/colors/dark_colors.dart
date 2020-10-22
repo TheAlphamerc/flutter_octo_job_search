@@ -21,7 +21,7 @@ class KDarkColors {
 
   static const Color subtitleColor = Color(0xff6e8098);
 
-  static const Color black = Color(0XFF24292e);
+  static const Color black = Color(0XFF19202d);
   static const Color gray = Color(0XFF6a737d);
   static const Color white = Color(0XFFffffff);
 

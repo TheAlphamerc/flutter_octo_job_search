@@ -23,16 +23,16 @@ class AppTheme {
             onPrimary: KLightColors.onPrimary,
             onSecondary: KLightColors.onPrimary,
             onBackground: KLightColors.onSurfaceLightColor),
-        // textTheme: TextThemes.lightTextTheme,
+        textTheme: TextThemes.lightTextTheme,
         appBarTheme: AppBarTheme(
           brightness: Brightness.light,
-          color: KLightColors.appBarColor,
+          color: KLightColors.primary,
           elevation: 1,
           textTheme: TextTheme(
-            headline6: TextStyle(color: KLightColors.black, fontSize: 20),
+            headline6: TextStyle(color: KDarkColors.white, fontSize: 20,fontWeight: FontWeight.bold),
           ),
           iconTheme: IconThemeData(
-            color: KLightColors.black,
+            color: KLightColors.white,
           ),
         ),
       );
@@ -57,7 +57,7 @@ class AppTheme {
           color: KDarkColors.primary,
           elevation: 1,
           textTheme: TextTheme(
-            headline6: TextStyle(color: KDarkColors.white, fontSize: 20),
+           headline6: TextStyle(color: KDarkColors.white, fontSize: 20,fontWeight: FontWeight.bold),
           ),
           iconTheme: IconThemeData(
             color: KDarkColors.iconColor,
@@ -81,6 +81,7 @@ class AppTheme {
       borderRadius: BorderRadius.circular(5),
       color: Theme.of(context).colorScheme.onPrimary,
       boxShadow: <BoxShadow>[BoxShadow(color: Color(0xffeaeaea), blurRadius: 10, offset: Offset(4, 4))]);
+
   // Return a scaling factor between 0.0 and 1.0 for screens heights ranging
   // from a fixed short to tall range.
   double contentScale(BuildContext context) {
