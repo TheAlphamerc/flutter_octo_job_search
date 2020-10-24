@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_octo_job_search/bloc/job/job_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 
@@ -22,6 +23,9 @@ class _AppState extends State<OctoApp> {
       providers: [
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),
+        ),
+        BlocProvider<JobBloc>(
+          create: (BuildContext context) => JobBloc(),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

@@ -3,30 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
 import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/ui/page/detail/widget/company_card.dart';
+import 'package:flutter_octo_job_search/ui/page/detail/widget/html_view.dart';
 import 'package:flutter_octo_job_search/ui/page/detail/widget/job_description_card.dart';
-import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 
 class JobDatailPage extends StatelessWidget {
-  const JobDatailPage({Key key, this.model}) : super(key: key);
+  JobDatailPage({Key key, this.model}) : super(key: key);
   final JobModel model;
-
+  final ScrollController controller = ScrollController();
   static MaterialPageRoute getPageRoute({JobModel model}) {
     return MaterialPageRoute(builder: (_) => JobDatailPage(model: model));
-  }
-  Widget _companyInitial(ThemeData theme) {
-    return Container(
-      width: 50,
-      height: 50,
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.symmetric(horizontal: 24),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: KDarkColors.randomColor(model.company), borderRadius: BorderRadius.circular(12)),
-      child: Text(
-        model.company.substring(0, 1),
-        style: theme.textTheme.bodyText1.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
-      ),
-    );
   }
 
   @override
@@ -54,6 +40,7 @@ class JobDatailPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        controller:controller,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -69,12 +56,28 @@ class JobDatailPage extends StatelessWidget {
                       color: theme.primaryColor,
                     ),
                   ),
-                  CompanyCard(model:model),
+                  CompanyCard(model: model),
                 ],
               ),
             ),
             SizedBox(height: 16),
-            JobDescriptionCard(model:model)
+            JobDescriptionCard(model: model,onApplyTap:(){
+              controller.animateTo(controller.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
+            }),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal:8, vertical: 8),
+              alignment: Alignment.topLeft,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: theme.primaryColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("How to apply", style: theme.textTheme.headline6.copyWith(color:theme.colorScheme.onPrimary)).hP8,
+                  // Text(model.howToApply, style: theme.textTheme.bodyText1),
+                  HtmlView(htmlData:model.howToApply, isOnPrimaryText: true,)
+                ],
+              ),
+            )
           ],
         ),
       ),

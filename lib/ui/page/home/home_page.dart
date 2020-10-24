@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_octo_job_search/bloc/job/job_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
 import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/helper/dummy_data.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
+import 'package:flutter_octo_job_search/ui/widget/erorr_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _MyHomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     list = [];
+    BlocProvider.of<JobBloc>(context)..add(LoadJobsList());
     DummyData.data.forEach((map) {
       var model = JobModel.fromJson(map);
       list.add(model);
@@ -91,15 +94,37 @@ class _MyHomePageState extends State<HomePage> {
                 )
               ],
             ),
-            if(list != null)
-            ListView.builder(
-              physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(vertical:16),
-              itemCount: list.length,
-              itemBuilder: (_, index) {
-                return JobTile(model:list[index]);
-              },
-            ).extended
+            if (list != null)
+              BlocBuilder<JobBloc, JobState>(
+                builder: (context, state) {
+                  if (state is LoadedJobsList) {
+                    list = state.jobs;
+                  }
+                  if (state is OnJobLoading) {
+                    return Container(
+                      height:AppTheme.fullHeight(context) - 150,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(theme.primaryColor),strokeWidth: 4,),
+                    );
+                  } else if (state is ErrorJobListState) {
+                    return Container(
+                      height:AppTheme.fullHeight(context) - 350,
+                      child: GErrorContainer(
+                        title: "Some error occured",
+                        description: "Try again in some time",
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    itemCount: list.length,
+                    itemBuilder: (_, index) {
+                      return JobTile(model: list[index]);
+                    },
+                  ).extended;
+                },
+              )
           ],
         ),
       ),

@@ -59,9 +59,9 @@ class AppTheme {
           textTheme: TextTheme(
            headline6: TextStyle(color: KDarkColors.white, fontSize: 20,fontWeight: FontWeight.bold),
           ),
-          iconTheme: IconThemeData(
-            color: KDarkColors.iconColor,
-          ),
+          // iconTheme: IconThemeData(
+          //   color: KDarkColors.iconColor,
+          // ),
         ),
       );
   static BoxDecoration outline(context) => BoxDecoration(

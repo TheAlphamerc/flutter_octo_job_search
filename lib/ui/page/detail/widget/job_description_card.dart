@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
 import 'package:flutter_octo_job_search/helper/utility.dart';
+import 'package:flutter_octo_job_search/ui/page/detail/widget/html_view.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 
 class JobDescriptionCard extends StatelessWidget {
-  const JobDescriptionCard({Key key, this.model}) : super(key: key);
+  const JobDescriptionCard({Key key, this.model, this.onApplyTap}) : super(key: key);
   final JobModel model;
-  Widget _companyInitial(ThemeData theme) {
-    return Center(
-      child: Container(
-        width: 70,
-        height: 70,
-        margin: EdgeInsets.symmetric(horizontal: 24),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(color: KDarkColors.randomColor(model.company), borderRadius: BorderRadius.circular(12)),
-        child: Text(
-          model.company.substring(0, 1),
-          style: theme.textTheme.headline3.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
+  final Function onApplyTap;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -57,7 +43,7 @@ class JobDescriptionCard extends StatelessWidget {
             model.location,
             style: theme.textTheme.bodyText2.copyWith(color: theme.primaryColor, fontWeight: FontWeight.bold),
           ),
-          
+
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -66,11 +52,14 @@ class JobDescriptionCard extends StatelessWidget {
               "Apply",
               style: theme.textTheme.button.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
             ),
-          ).ripple(() {}).vP16,
-          Text(
-            model.description,
-            style: theme.textTheme.bodyText1.copyWith(color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
-          ),
+          ).ripple(() {
+            onApplyTap();
+          }).vP16,
+          HtmlView(htmlData: model.description)
+          // Text(
+          //   model.description,
+          //   style: theme.textTheme.bodyText1.copyWith(color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+          // ),
         ],
       ),
     );

@@ -47,20 +47,24 @@ class CompanyCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),
-                Text(
-                  model.companyUrl,
-                  style: theme.textTheme.subtitle1.copyWith(fontSize: 16),
-                  maxLines: 1,
-                ),
-                SizedBox(height: 16),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(color: theme.primaryColor, borderRadius: BorderRadius.circular(5)),
-                  child: Text(
-                    "Visit",
-                    style: theme.textTheme.button.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                if (model.companyUrl != null) ...[
+                  Text(
+                    model.companyUrl,
+                    style: theme.textTheme.subtitle1.copyWith(fontSize: 16),
+                    maxLines: 1,
                   ),
-                ).ripple(() {})
+                  SizedBox(height: 16),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(color: theme.primaryColor, borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      "Visit",
+                      style: theme.textTheme.button.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                    ),
+                  ).ripple(() {
+                    Utility.launchURL(context, model.companyUrl);
+                  })
+                ],
               ],
             ),
           ),

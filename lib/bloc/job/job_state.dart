@@ -7,4 +7,18 @@ abstract class JobState extends Equatable {
   List<Object> get props => [];
 }
 
-class JobInitial extends JobState {}
+class OnJobLoading extends JobState {}
+class LoadedJobsList extends JobState {
+  final List<JobModel> jobs;
+
+  LoadedJobsList(this.jobs);
+}
+
+class ErrorJobListState extends JobState {
+  final String errorMessage;
+
+  ErrorJobListState(this.errorMessage);
+
+  @override
+  String toString() => 'ErrorJobListState';
+}
