@@ -112,6 +112,10 @@ extension ExAlignment on Widget {
         child: this,
         alignment: Alignment.bottomCenter,
       );
+  Widget get alignTopRight => Align(
+        child: this,
+        alignment: Alignment.bottomCenter,
+      );
   Widget get alignBottomLeft => Align(
         child: this,
         alignment: Alignment.bottomLeft,

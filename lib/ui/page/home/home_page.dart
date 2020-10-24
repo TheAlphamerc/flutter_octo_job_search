@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
 import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/helper/dummy_data.dart';
-import 'package:flutter_octo_job_search/ui/page/widget/job_tile.dart';
+import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 
 class HomePage extends StatefulWidget {
