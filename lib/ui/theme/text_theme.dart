@@ -77,7 +77,7 @@ class TextThemes {
         ),
       
         button: GoogleFonts.roboto(
-          fontSize: 12.0,
+          fontSize: 14.0,
           fontWeight: FontWeight.w500,
           color: Color(0xffe5e3e6),
           letterSpacing: 1.2
@@ -157,7 +157,7 @@ class TextThemes {
         ),
       
         button: GoogleFonts.roboto(
-          fontSize: 12.0,
+          fontSize: 14.0,
           fontWeight: FontWeight.w500,
           color: KLightColors.black,
           letterSpacing: 1.2

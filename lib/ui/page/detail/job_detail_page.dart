@@ -22,7 +22,7 @@ class JobDatailPage extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        title: Text("Home"),
+        title: Text("Octo Job Search"),
         actions: [
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
@@ -40,7 +40,7 @@ class JobDatailPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        controller:controller,
+        controller: controller,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -61,20 +61,26 @@ class JobDatailPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            JobDescriptionCard(model: model,onApplyTap:(){
-              controller.animateTo(controller.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
-            }),
+            JobDescriptionCard(
+                model: model,
+                onApplyTap: () {
+                  controller.animateTo(controller.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 500), curve: Curves.linearToEaseOut);
+                }),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              padding: EdgeInsets.symmetric(horizontal:8, vertical: 8),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               alignment: Alignment.topLeft,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: theme.primaryColor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("How to apply", style: theme.textTheme.headline6.copyWith(color:theme.colorScheme.onPrimary)).hP8,
+                  Text("How to apply", style: theme.textTheme.headline6.copyWith(color: theme.colorScheme.onPrimary)).hP8,
                   // Text(model.howToApply, style: theme.textTheme.bodyText1),
-                  HtmlView(htmlData:model.howToApply, isOnPrimaryText: true,)
+                  HtmlView(
+                    htmlData: model.howToApply,
+                    isOnPrimaryText: true,
+                  )
                 ],
               ),
             )

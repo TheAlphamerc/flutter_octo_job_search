@@ -4,6 +4,7 @@ import 'package:flutter_octo_job_search/bloc/job/job_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
 import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/helper/dummy_data.dart';
+import 'package:flutter_octo_job_search/ui/page/home/widget/filter_dialog.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 import 'package:flutter_octo_job_search/ui/widget/erorr_widget.dart';
@@ -15,6 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   List<JobModel> list;
+  ValueNotifier<bool> isFullTime = ValueNotifier<bool>(false);
+  TextEditingController location;
+  TextEditingController description;
   @override
   void initState() {
     super.initState();
@@ -26,6 +30,28 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
+  void displayFilterJob() async {
+    await showDialog(
+      context: context,
+      builder: (_) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            height: 210,
+            alignment: Alignment.center,
+            child: FilterDialog(
+              isFullTime: isFullTime,
+              controller: location,
+              onSearchTap: () {
+                print("Call api");
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -33,7 +59,7 @@ class _MyHomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        title: Text("Home"),
+        title: Text("Octo Job Search"),
         actions: [
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
@@ -79,10 +105,12 @@ class _MyHomePageState extends State<HomePage> {
                         Icon(Icons.search, color: theme.primaryColor),
                         Expanded(
                           child: TextField(
-                            decoration: InputDecoration(border: InputBorder.none, hintText: "Search job"),
+                            decoration: InputDecoration(border: InputBorder.none, hintText: "Filter by text"),
                           ),
                         ),
-                        Icon(Icons.filter_alt).p(8).ripple(() {}),
+                        Icon(Icons.filter_alt).p(8).ripple(() {
+                          displayFilterJob();
+                        }),
                         // SizedBox(width:8),
                         Container(
                           color: theme.primaryColor,
@@ -102,13 +130,16 @@ class _MyHomePageState extends State<HomePage> {
                   }
                   if (state is OnJobLoading) {
                     return Container(
-                      height:AppTheme.fullHeight(context) - 150,
+                      height: AppTheme.fullHeight(context) - 150,
                       alignment: Alignment.center,
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(theme.primaryColor),strokeWidth: 4,),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(theme.primaryColor),
+                        strokeWidth: 4,
+                      ),
                     );
                   } else if (state is ErrorJobListState) {
                     return Container(
-                      height:AppTheme.fullHeight(context) - 350,
+                      height: AppTheme.fullHeight(context) - 350,
                       child: GErrorContainer(
                         title: "Some error occured",
                         description: "Try again in some time",
