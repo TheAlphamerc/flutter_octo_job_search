@@ -6,7 +6,7 @@ class Repository{
 
   Repository(this.apiGatway);
 
-  Future<List<JobModel>> getJobs(){
-    return apiGatway.getJobs();
+  Future<List<JobModel>> getJobs({String description, String location, bool isFullTime,int page}){
+    return apiGatway.getJobs(description:description,location:location,isFullTime:isFullTime,page:page);
   }
 }

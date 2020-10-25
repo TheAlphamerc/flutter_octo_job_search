@@ -21,7 +21,11 @@ class _MyHomePageState extends State<HomePage> {
   TextEditingController location;
   TextEditingController description;
   @override
+  ScrollController _controller;
   void initState() {
+    location = TextEditingController();
+    description = TextEditingController();
+    _controller = ScrollController()..addListener(listener);
     super.initState();
     list = [];
     BlocProvider.of<JobBloc>(context)..add(LoadJobsList());
@@ -31,7 +35,16 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
+  
+
+  void listener() {
+    if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+      BlocProvider.of<JobBloc>(context)..add(SearchNextJobs(description.text, isFullTime.value, location.text,isLoadNextJobs: true));
+    }
+  }
+
   void displayFilterJob() async {
+    description.clear();
     await showDialog(
       context: context,
       builder: (_) {
@@ -43,8 +56,9 @@ class _MyHomePageState extends State<HomePage> {
             child: FilterDialog(
               isFullTime: isFullTime,
               controller: location,
-              onSearchTap: () {
+              onSearchTap: (loc) {
                 print("Call api");
+                BlocProvider.of<JobBloc>(context)..add(SearchJobBy(description.text, isFullTime.value, loc));
               },
             ),
           ),
@@ -120,7 +134,10 @@ class _MyHomePageState extends State<HomePage> {
                         Container(
                           color: theme.primaryColor,
                           child: Icon(Icons.search, color: theme.colorScheme.onPrimary).p(8),
-                        ).cornerRadius(5).ripple(() {})
+                        ).cornerRadius(5).ripple(() {
+                          FocusManager.instance.primaryFocus.unfocus();
+                          BlocProvider.of<JobBloc>(context)..add(SearchJobBy(description.text, null, null));
+                        })
                       ],
                     ),
                   ),
@@ -152,10 +169,17 @@ class _MyHomePageState extends State<HomePage> {
                     );
                   }
                   return ListView.builder(
+                    controller: _controller,
                     physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: 16),
-                    itemCount: list.length,
+                    itemCount: list.length + 1,
                     itemBuilder: (_, index) {
+                      if(index == list.length){
+                        if(state is OnNextJobLoading){
+                          return CircularProgressIndicator();
+                        }
+                        return SizedBox.shrink();
+                      }
                       return JobTile(model: list[index]);
                     },
                   ).extended;

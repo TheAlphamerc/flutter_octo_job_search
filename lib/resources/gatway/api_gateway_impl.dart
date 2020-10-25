@@ -9,9 +9,14 @@ class ApiGatewayImpl implements ApiGateway {
   ApiGatewayImpl(this._dioClient);
 
   @override
-  Future<List<JobModel>> getJobs() async {
+  Future<List<JobModel>> getJobs({String description, String location, bool isFullTime, int page}) async {
     try {
-      var response = await _dioClient.get(Config.all);
+      String url = Config.all;
+      if(description != null || location != null || isFullTime != null){
+        url = Config.filerJob(description: description,location:location,isFullTime:isFullTime,);
+      }
+
+      var response = await _dioClient.get(url);
       List<JobModel> list = [];
       list = _dioClient.getJsonBodyList(response).map((value) {
         return JobModel.fromJson(value);

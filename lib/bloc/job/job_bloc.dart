@@ -19,19 +19,58 @@ class JobBloc extends Bloc<JobEvent, JobState> {
   ) async* {
     if (event is LoadJobsList) {
       yield* getJobs(event);
+    } else if (event is SearchJobBy) {
+      yield* getJobs(event, description: event.description, isFullTime: event.isFullTime, location: event.location);
+    } else if (event is SearchNextJobs) {
+      var stat = state as LoadedJobsList;
+      int page = event.isLoadNextJobs ? stat.page + 1 : 1;
+      yield* getNextJobs(event, page: page, description: event.description, isFullTime: event.isFullTime, location: event.location);
     }
   }
 
-  Stream<JobState> getJobs(JobEvent event) async* {
+  Stream<JobState> getJobs(
+    JobEvent event, {
+    String description,
+    String location,
+    bool isFullTime,
+  }) async* {
     try {
       yield OnJobLoading();
-      final list = await event.repository.getJobs();
-      if(list != null){
+      final list = await event.repository.getJobs(page: 1, description: description, isFullTime: isFullTime, location: location);
+      if (list != null) {
         print("Jobs getts data");
-        yield LoadedJobsList(list);
+        yield LoadedJobsList(list, page: 1);
       }
     } catch (_, stackTrace) {
-      developer.log('$_', name: 'CommitBloc', error: _, stackTrace: stackTrace);
+      developer.log('$_', name: 'getJobs', error: _, stackTrace: stackTrace);
+      yield ErrorJobListState("Some error occured");
+      yield state;
+    }
+  }
+
+  Stream<JobState> getNextJobs(
+    JobEvent event, {
+    String description,
+    String location,
+    bool isFullTime,
+    int page = 2,
+  }) async* {
+    try {
+      var stat = state as LoadedJobsList;
+      yield OnNextJobLoading(stat.jobs);
+      final list = await event.repository.getJobs(page: 1, description: description, isFullTime: isFullTime, location: location);
+      if (!(list != null && list.isNotEmpty)) {
+        print("No jobs left");
+        yield LoadedJobsList(stat.jobs, page: page);
+        return;
+      } else {
+        var newList = stat.jobs;
+        newList.addAll(stat.jobs);
+        yield LoadedJobsList(newList, page: page);
+        return;
+      }
+    } catch (_, stackTrace) {
+      developer.log('$_', name: 'getNextJobs', error: _, stackTrace: stackTrace);
       yield ErrorJobListState("Some error occured");
       yield state;
     }

@@ -4,7 +4,7 @@ import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 class FilterDialog extends StatelessWidget {
   const FilterDialog({Key key, this.isFullTime, this.onSearchTap, this.controller}) : super(key: key);
   final ValueNotifier<bool> isFullTime;
-  final Function onSearchTap;
+  final Function(String) onSearchTap;
   final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,9 @@ class FilterDialog extends StatelessWidget {
               style: theme.textTheme.button.copyWith(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
             ),
           ).ripple(() {
-            onSearchTap();
+            onSearchTap(controller.text);
             Navigator.pop(context);
+            controller.clear();
           }).p16,
         ],
       ),
