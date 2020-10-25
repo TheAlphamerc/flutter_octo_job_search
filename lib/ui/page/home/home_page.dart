@@ -6,6 +6,7 @@ import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/helper/dummy_data.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/filter_dialog.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
+import 'package:flutter_octo_job_search/ui/page/settings.dart';
 import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 import 'package:flutter_octo_job_search/ui/widget/erorr_widget.dart';
 
@@ -59,20 +60,24 @@ class _MyHomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        title: Text("Octo Job Search"),
+        title: Text("  Octo Job Search"),
         actions: [
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
               return IconButton(
-                icon: Icon(Icons.lightbulb),
+                icon: Icon(Icons.dehaze_outlined),
                 onPressed: () {
-                  if (state is LoadedTheme) {
-                    var type = state.type == ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK;
-                    BlocProvider.of<ThemeBloc>(context)..add(OnThemeChange(type));
-                  }
+                  Navigator.push(context, SettingsPage.getPageRoute());
+                  // if (state is LoadedTheme) {
+                  //   var type = state.type == ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK;
+                  //   BlocProvider.of<ThemeBloc>(context)..add(OnThemeChange(type));
+                  // }
                 },
               );
             },
+          ),
+          SizedBox(
+            width: 10,
           )
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_octo_job_search/helper/utility.dart';
+import 'package:flutter_octo_job_search/ui/theme/theme.dart';
 
 class HtmlView extends StatefulWidget {
   HtmlView({Key key, this.htmlData, this.isOnPrimaryText = false}) : super(key: key);
@@ -18,7 +19,7 @@ class _HtmlViewState extends State<HtmlView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textColor = widget.isOnPrimaryText ? theme.colorScheme.onPrimary : theme.textTheme.bodyText1.color;
+    final textColor = widget.isOnPrimaryText ? theme.colorScheme.onPrimary : KDarkColors.subtitleColor;//theme.textTheme.bodyText1.color;
     return Html(
       data: widget.htmlData,
       style: {

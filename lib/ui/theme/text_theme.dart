@@ -134,7 +134,7 @@ class TextThemes {
         bodyText1: GoogleFonts.roboto(
           fontSize: 14.0,
           fontWeight: FontWeight.w400,
-          color: KLightColors.black,
+          color: KLightColors.bodyTextColor,
           letterSpacing: .5
         ),
         bodyText2: GoogleFonts.roboto(

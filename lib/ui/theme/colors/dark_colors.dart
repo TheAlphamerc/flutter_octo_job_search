@@ -20,6 +20,7 @@ class KDarkColors {
   static const Color iconColor = Color(0xff9fa6b2);
 
   static const Color subtitleColor = Color(0xff6e8098);
+  
 
   static const Color black = Color(0XFF19202d);
   static const Color gray = Color(0XFF6a737d);

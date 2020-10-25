@@ -16,6 +16,7 @@ class AppTheme {
         buttonColor: KLightColors.primary,
         backgroundColor: KLightColors.background,
         cardColor: KLightColors.cardColor,
+        cardTheme: CardTheme(color: KLightColors.cardColor,elevation:0),
         iconTheme: IconThemeData(color: KLightColors.gray),
         colorScheme: ThemeData.dark().colorScheme.copyWith(
             surface: KLightColors.surfaceColor,
@@ -44,6 +45,7 @@ class AppTheme {
         buttonColor: KDarkColors.primary,
         backgroundColor: KDarkColors.background,
         cardColor: KDarkColors.cardColor,
+        cardTheme: CardTheme(color: KDarkColors.cardColor,elevation:0),
         iconTheme: IconThemeData(color: KDarkColors.iconColor),
         colorScheme: ThemeData.dark().colorScheme.copyWith(
             surface: KDarkColors.surfaceColor,

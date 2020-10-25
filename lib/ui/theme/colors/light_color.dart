@@ -19,6 +19,7 @@ class KLightColors {
   static const Color onSurfaceDarkColor = Color(0XFF94959e);
 
   static const Color subtitleColor = Color(0xff6e8098);
+  static const Color bodyTextColor = Color(0xff9daec2);
 
   static const Color black = Color(0XFF24292e);
   static const Color gray = Color(0XFF6a737d);
