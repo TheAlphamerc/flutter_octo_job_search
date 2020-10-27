@@ -6,6 +6,20 @@ class Config{
   
 
   static String filerJob({int pageNo = 1,String description,String location,bool isFullTime}) {
-    return "positions.json?description=$description&location=$location&full_time=$isFullTime&page=$pageNo";
+    String url =  "positions.json?";
+    if(description != null && description.isNotEmpty){
+      url +="description=$description";
+    }if(location != null && location.isNotEmpty){
+      url += "&location=$location";
+    }
+    if(isFullTime != null){
+      url += "&full_time=$isFullTime";
+    }
+    if(pageNo != null){
+      url += "&page=$pageNo";
+    }else{
+      url += "1";
+    }
+    return url;
   }
 }

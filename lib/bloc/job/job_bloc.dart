@@ -23,7 +23,7 @@ class JobBloc extends Bloc<JobEvent, JobState> {
       yield* getJobs(event, description: event.description, isFullTime: event.isFullTime, location: event.location);
     } else if (event is SearchNextJobs) {
       var stat = state as LoadedJobsList;
-      int page = event.isLoadNextJobs ? stat.page + 1 : 1;
+      int page = event.isLoadNextJobs ? (stat.page ?? 1) + 1 : 1;
       yield* getNextJobs(event, page: page, description: event.description, isFullTime: event.isFullTime, location: event.location);
     }
   }
@@ -55,23 +55,30 @@ class JobBloc extends Bloc<JobEvent, JobState> {
     bool isFullTime,
     int page = 2,
   }) async* {
+    var stat = state as LoadedJobsList;
     try {
-      var stat = state as LoadedJobsList;
-      yield OnNextJobLoading(stat.jobs);
-      final list = await event.repository.getJobs(page: 1, description: description, isFullTime: isFullTime, location: location);
+      if(stat.loadingMore){
+        print("Loading more..");
+        return;
+      }else if(!stat.hasMore){
+         print("No jobs left");
+          return;
+      }
+      yield OnNextJobLoading(stat.jobs,loadingMore:true,hasMore:stat.hasMore);
+      final list = await event.repository.getJobs(page: page, description: description, isFullTime: isFullTime, location: location);
       if (!(list != null && list.isNotEmpty)) {
         print("No jobs left");
-        yield LoadedJobsList(stat.jobs, page: page);
+        yield LoadedJobsList(stat.jobs, page: page, hasMore: false);
         return;
       } else {
-        var newList = stat.jobs;
+        var newList = List<JobModel>.from(stat.jobs,growable: true);
         newList.addAll(stat.jobs);
-        yield LoadedJobsList(newList, page: page);
+        yield LoadedJobsList(newList, page: page,loadingMore:false);
         return;
       }
     } catch (_, stackTrace) {
       developer.log('$_', name: 'getNextJobs', error: _, stackTrace: stackTrace);
-      yield ErrorJobListState("Some error occured");
+      yield ErrorNextJobListState("Some error occured",stat.jobs,loadingMore:false,hasMore:stat.hasMore);
       yield state;
     }
   }

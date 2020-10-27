@@ -35,11 +35,10 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
-  
-
   void listener() {
-    if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-      BlocProvider.of<JobBloc>(context)..add(SearchNextJobs(description.text, isFullTime.value, location.text,isLoadNextJobs: true));
+    if (_controller.position.maxScrollExtent - _controller.offset < 100 &&
+        !_controller.position.outOfRange) {
+      BlocProvider.of<JobBloc>(context)..add(SearchNextJobs(description.text, isFullTime.value, location.text, isLoadNextJobs: true));
     }
   }
 
@@ -124,6 +123,7 @@ class _MyHomePageState extends State<HomePage> {
                         Icon(Icons.search, color: theme.primaryColor),
                         Expanded(
                           child: TextField(
+                            controller:description,
                             decoration: InputDecoration(border: InputBorder.none, hintText: "Filter by text"),
                           ),
                         ),
@@ -174,9 +174,16 @@ class _MyHomePageState extends State<HomePage> {
                     padding: EdgeInsets.symmetric(vertical: 16),
                     itemCount: list.length + 1,
                     itemBuilder: (_, index) {
-                      if(index == list.length){
-                        if(state is OnNextJobLoading){
-                          return CircularProgressIndicator();
+                      if (index == list.length) {
+                        if (state is OnNextJobLoading) {
+                          return Container(
+                              height: 40,
+                              width: 40,
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                valueColor: AlwaysStoppedAnimation(theme.primaryColor),
+                              ));
                         }
                         return SizedBox.shrink();
                       }

@@ -14,8 +14,10 @@ class LoadedJobsList extends JobState {
   final String description;
   final String location;
   final bool isFullTime;
+  final bool hasMore;
+  final bool loadingMore;
 
-  LoadedJobsList(this.jobs, {this.isFullTime,this.page, this.description, this.location});
+  LoadedJobsList(this.jobs, {this.isFullTime,this.page, this.description, this.location,this.hasMore = true, this.loadingMore = false,});
 }
 
 class ErrorJobListState extends JobState {
@@ -27,12 +29,12 @@ class ErrorJobListState extends JobState {
   String toString() => 'ErrorJobListState';
 }
 class OnNextJobLoading extends LoadedJobsList {
-  OnNextJobLoading(List<JobModel> jobs) : super(jobs);
+  OnNextJobLoading(List<JobModel> jobs,{bool loadingMore, bool hasMore}) : super(jobs,loadingMore:loadingMore,hasMore:hasMore);
 }
 class ErrorNextJobListState extends LoadedJobsList {
   final String errorMessage;
 
-  ErrorNextJobListState(this.errorMessage,List<JobModel> jobs): super(jobs);
+  ErrorNextJobListState(this.errorMessage,List<JobModel> jobs,{bool loadingMore,int page,bool hasMore}): super(jobs,loadingMore:loadingMore,page:page,hasMore:hasMore);
 
   @override
   String toString() => 'ErrorJobListState';

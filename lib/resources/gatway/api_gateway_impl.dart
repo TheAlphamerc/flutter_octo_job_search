@@ -13,7 +13,7 @@ class ApiGatewayImpl implements ApiGateway {
     try {
       String url = Config.all;
       if(description != null || location != null || isFullTime != null){
-        url = Config.filerJob(description: description,location:location,isFullTime:isFullTime,);
+        url = Config.filerJob(pageNo:page,description: description,location:location,isFullTime:isFullTime,);
       }
 
       var response = await _dioClient.get(url);
