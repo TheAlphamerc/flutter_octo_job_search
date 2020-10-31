@@ -17,7 +17,7 @@ class GErrorContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height ,
+      // height: MediaQuery.of(context).size.height ,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -27,13 +27,13 @@ class GErrorContainer extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             title,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline5.copyWith(color:Theme.of(context).textTheme.subtitle1.color),
           ),
           SizedBox(height: 8),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(
             height: 24,

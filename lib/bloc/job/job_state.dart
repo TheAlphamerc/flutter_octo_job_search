@@ -17,6 +17,8 @@ class LoadedJobsList extends JobState {
   final bool hasMore;
   final bool loadingMore;
 
+  bool get isNotNullEmpty => jobs != null && jobs.isEmpty;
+
   LoadedJobsList(this.jobs, {this.isFullTime,this.page, this.description, this.location,this.hasMore = true, this.loadingMore = false,});
 }
 

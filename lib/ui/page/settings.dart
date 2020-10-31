@@ -96,9 +96,9 @@ class SettingsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _getUtilRos(context, "Privacy Policy"),
+          _getUtilRos(context, "Report Issue", onPressed: (){ Utility.launchTo("https://github.com/TheAlphamerc/flutter_octo_job_search/issues");}),
           Divider(height: 0),
-          _getUtilRos(context, "Terms of Service"),
+          _getUtilRos(context, "Support Project",onPressed: (){ Utility.launchTo("https://www.paypal.com/paypalme/thealphamerc");}),
         ],
       ),
     );

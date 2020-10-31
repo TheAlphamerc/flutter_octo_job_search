@@ -21,7 +21,7 @@ class FilterDialog extends StatelessWidget {
               SizedBox(width: 10),
               TextField(
                 controller: controller,
-                decoration: InputDecoration(border: InputBorder.none, hintText: "Filter by location"),
+                decoration: InputDecoration(border: InputBorder.none, hintText: "Filter by city, state, zip code or country"),
               ).extended
             ],
           ).p(12),

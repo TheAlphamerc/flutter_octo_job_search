@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
-import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
 import 'package:flutter_octo_job_search/ui/page/detail/widget/company_card.dart';
 import 'package:flutter_octo_job_search/ui/page/detail/widget/html_view.dart';
 import 'package:flutter_octo_job_search/ui/page/detail/widget/job_description_card.dart';
@@ -20,25 +18,7 @@ class JobDatailPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        title: Text("Octo Job Search"),
-        actions: [
-          BlocBuilder<ThemeBloc, ThemeState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: Icon(Icons.lightbulb),
-                onPressed: () {
-                  if (state is LoadedTheme) {
-                    var type = state.type == ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK;
-                    BlocProvider.of<ThemeBloc>(context)..add(OnThemeChange(type));
-                  }
-                },
-              );
-            },
-          )
-        ],
-      ),
+      appBar: AppBar(elevation: 0, title: Text(model.title)),
       body: SingleChildScrollView(
         controller: controller,
         child: Column(

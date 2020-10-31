@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_octo_job_search/bloc/job/job_bloc.dart';
-import 'package:flutter_octo_job_search/bloc/job/job_model.dart';
-import 'package:flutter_octo_job_search/bloc/theme/theme_bloc.dart';
-import 'package:flutter_octo_job_search/helper/dummy_data.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/filter_dialog.dart';
 import 'package:flutter_octo_job_search/ui/page/home/widget/job_tile.dart';
 import 'package:flutter_octo_job_search/ui/page/settings.dart';
@@ -16,28 +13,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-  List<JobModel> list;
   ValueNotifier<bool> isFullTime = ValueNotifier<bool>(false);
   TextEditingController location;
   TextEditingController description;
   @override
   ScrollController _controller;
   void initState() {
+    BlocProvider.of<JobBloc>(context)..add(LoadJobsList());
     location = TextEditingController();
     description = TextEditingController();
     _controller = ScrollController()..addListener(listener);
     super.initState();
-    list = [];
-    BlocProvider.of<JobBloc>(context)..add(LoadJobsList());
-    DummyData.data.forEach((map) {
-      var model = JobModel.fromJson(map);
-      list.add(model);
-    });
   }
 
   void listener() {
-    if (_controller.position.maxScrollExtent - _controller.offset < 100 &&
-        !_controller.position.outOfRange) {
+    if (_controller.position.maxScrollExtent - _controller.offset < 100 && !_controller.position.outOfRange) {
       BlocProvider.of<JobBloc>(context)..add(SearchNextJobs(description.text, isFullTime.value, location.text, isLoadNextJobs: true));
     }
   }
@@ -57,6 +47,7 @@ class _MyHomePageState extends State<HomePage> {
               controller: location,
               onSearchTap: (loc) {
                 print("Call api");
+                FocusManager.instance.primaryFocus.unfocus();
                 BlocProvider.of<JobBloc>(context)..add(SearchJobBy(description.text, isFullTime.value, loc));
               },
             ),
@@ -75,18 +66,10 @@ class _MyHomePageState extends State<HomePage> {
         elevation: 0,
         title: Text("  Octo Job Search"),
         actions: [
-          BlocBuilder<ThemeBloc, ThemeState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: Icon(Icons.dehaze_outlined),
-                onPressed: () {
-                  Navigator.push(context, SettingsPage.getPageRoute());
-                  // if (state is LoadedTheme) {
-                  //   var type = state.type == ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK;
-                  //   BlocProvider.of<ThemeBloc>(context)..add(OnThemeChange(type));
-                  // }
-                },
-              );
+          IconButton(
+            icon: Icon(Icons.dehaze_outlined),
+            onPressed: () {
+              Navigator.push(context, SettingsPage.getPageRoute());
             },
           ),
           SizedBox(
@@ -112,7 +95,7 @@ class _MyHomePageState extends State<HomePage> {
                   child: Container(
                     height: 60,
                     margin: EdgeInsets.symmetric(horizontal: 24),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -123,8 +106,9 @@ class _MyHomePageState extends State<HomePage> {
                         Icon(Icons.search, color: theme.primaryColor),
                         Expanded(
                           child: TextField(
-                            controller:description,
-                            decoration: InputDecoration(border: InputBorder.none, hintText: "Filter by text"),
+                            controller: description,
+                            decoration:
+                                InputDecoration(border: InputBorder.none, hintText: "Search by title, expertise, companies,"),
                           ),
                         ),
                         Icon(Icons.filter_alt).p(8).ripple(() {
@@ -135,6 +119,7 @@ class _MyHomePageState extends State<HomePage> {
                           color: theme.primaryColor,
                           child: Icon(Icons.search, color: theme.colorScheme.onPrimary).p(8),
                         ).cornerRadius(5).ripple(() {
+                          if (description.text.isEmpty) return;
                           FocusManager.instance.primaryFocus.unfocus();
                           BlocProvider.of<JobBloc>(context)..add(SearchJobBy(description.text, null, null));
                         })
@@ -144,37 +129,43 @@ class _MyHomePageState extends State<HomePage> {
                 )
               ],
             ),
-            if (list != null)
-              BlocBuilder<JobBloc, JobState>(
-                builder: (context, state) {
-                  if (state is LoadedJobsList) {
-                    list = state.jobs;
-                  }
-                  if (state is OnJobLoading) {
-                    return Container(
-                      height: AppTheme.fullHeight(context) - 150,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(theme.primaryColor),
-                        strokeWidth: 4,
-                      ),
-                    );
-                  } else if (state is ErrorJobListState) {
-                    return Container(
-                      height: AppTheme.fullHeight(context) - 350,
-                      child: GErrorContainer(
-                        title: "Some error occured",
-                        description: "Try again in some time",
-                      ),
+            BlocBuilder<JobBloc, JobState>(
+              builder: (context, state) {
+                if ((state is OnJobLoading)) {
+                  return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    SizedBox(height: 120),
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(theme.primaryColor),
+                      strokeWidth: 4,
+                    ),
+                  ]);
+                } else if (state is ErrorJobListState) {
+                  return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    GErrorContainer(
+                      title: "Server down this time",
+                      description: "Try again in some time",
+                    ),
+                  ]);
+                }
+                if (state is LoadedJobsList) {
+                  if (state.isNotNullEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GErrorContainer(
+                          title: "No job found",
+                          description: description.text.isEmpty ? "Try again in sometime" : "Try again with other job title",
+                        ),
+                      ],
                     );
                   }
                   return ListView.builder(
                     controller: _controller,
                     physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: 16),
-                    itemCount: list.length + 1,
+                    itemCount: state.jobs.length + 1,
                     itemBuilder: (_, index) {
-                      if (index == list.length) {
+                      if (index == state.jobs.length) {
                         if (state is OnNextJobLoading) {
                           return Container(
                               height: 40,
@@ -187,11 +178,16 @@ class _MyHomePageState extends State<HomePage> {
                         }
                         return SizedBox.shrink();
                       }
-                      return JobTile(model: list[index]);
+                      return JobTile(model: state.jobs[index]);
                     },
                   ).extended;
-                },
-              )
+                }
+                return CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(theme.primaryColor),
+                  strokeWidth: 4,
+                );
+              },
+            )
           ],
         ),
       ),

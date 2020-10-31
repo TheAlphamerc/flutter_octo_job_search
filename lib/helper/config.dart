@@ -8,7 +8,7 @@ class Config{
   static String filerJob({int pageNo = 1,String description,String location,bool isFullTime}) {
     String url =  "positions.json?";
     if(description != null && description.isNotEmpty){
-      url +="description=$description";
+      url +="search=$description";
     }if(location != null && location.isNotEmpty){
       url += "&location=$location";
     }

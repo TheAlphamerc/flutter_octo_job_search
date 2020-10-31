@@ -44,7 +44,6 @@ class JobBloc extends Bloc<JobEvent, JobState> {
     } catch (_, stackTrace) {
       developer.log('$_', name: 'getJobs', error: _, stackTrace: stackTrace);
       yield ErrorJobListState("Some error occured");
-      yield state;
     }
   }
 
@@ -79,7 +78,6 @@ class JobBloc extends Bloc<JobEvent, JobState> {
     } catch (_, stackTrace) {
       developer.log('$_', name: 'getNextJobs', error: _, stackTrace: stackTrace);
       yield ErrorNextJobListState("Some error occured",stat.jobs,loadingMore:false,hasMore:stat.hasMore);
-      yield state;
     }
   }
 }
