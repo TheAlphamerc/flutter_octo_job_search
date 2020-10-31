@@ -142,7 +142,7 @@ class _MyHomePageState extends State<HomePage> {
                 } else if (state is ErrorJobListState) {
                   return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                     GErrorContainer(
-                      title: "Server down this time",
+                      title: "Server down :(",
                       description: "Try again in some time",
                     ),
                   ]);
