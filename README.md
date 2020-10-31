@@ -69,7 +69,6 @@ Home (Light Theme)       |  Job detail (Light Theme)  | Settings  (Light Theme) 
 |   |       '-- theme_state.dart
 |   |-- helper
 |   |   |-- config.dart
-|   |   |-- dummy_data.dart
 |   |   |-- icons.dart
 |   |   '-- utility.dart
 |   |-- locator.dart
