@@ -154,7 +154,7 @@ class _MyHomePageState extends State<HomePage> {
                       children: [
                         GErrorContainer(
                           title: "No job found",
-                          description: description.text.isEmpty ? "Try again in sometime" : "Try again with other job title",
+                          description: description.text.isEmpty ? "Try again in sometime" : "Try again with other keyword",
                         ),
                       ],
                     );
