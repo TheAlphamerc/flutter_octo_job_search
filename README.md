@@ -4,8 +4,10 @@
 Octo Job Search app is a job search app built in flutter framwork. It uses [Github Jobs](https://jobs.github.com/api) data to display jobs.
 App design is taken from [Fronntend Mentor](https://www.frontendmentor.io/challenges/github-jobs-api-93L-NL6rP) and [Bhanu Taneja's Article](https://dev.to/pbteja1998/revamped-github-jobs-website-using-design-from-frontend-mentor-3m0n)
 
+App preview:- [Youtube](https://youtu.be/Mb1dlB0XbD4)
+
 ## Download App
-Will be available soon
+<a href="https://play.google.com/store/apps/details?id=com.thealphamerc.flutter_octo_job_search"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a>
 
 ## Screenshots
 
